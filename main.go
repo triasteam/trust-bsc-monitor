@@ -24,7 +24,7 @@ var (
 )
 
 func init() {
-	flag.IntVar(&interval, "i", 120, "blockheight unincrease time second: default: 120")
+	flag.IntVar(&interval, "i", 60, "blockheight unincrease time second: default: 60")
 	flag.BoolVar(&test, "t", false, "restart docker,just for test: default: false")
 	flag.StringVar(&name, "name", "trust-bsc", "restart docker name,default: trust-bsc")
 	flag.StringVar(&logPath, "path", "./restart_bsc.log", "log path,default: ./restart_bsc.log")
@@ -33,7 +33,9 @@ func init() {
 
 func main() {
 	flag.Parse()
-	InitLog("info", logPath)
+	//10.31checking
+	//InitLog("info", logPath)
+	InitLog("debug", logPath)
 	Logger.Infof("version: %s", version)
 	if test {
 		RestartBsc(name)
@@ -53,6 +55,7 @@ func MonitorBlockIncrease(url, name string, interval int) {
 		newH, err := GetChainHeight(url)
 		if err == nil {
 			if !(newH > oldH) {
+				Logger.Debugf(fmt.Sprintf("cur in MonitorBlockIncrease() check  node is oldH ,to RestartBsc()!,cur newH height is: %d,old height is: %d", newH, oldH))
 				RestartBsc(name)
 			} else {
 				oldH = newH
@@ -60,6 +63,9 @@ func MonitorBlockIncrease(url, name string, interval int) {
 		} else {
 			Logger.Warn(fmt.Sprintf("get height err: %s", err.Error()))
 		}
+		//10.31checking
+		Logger.Debugf(fmt.Sprintf("cur in MonitorBlockIncrease() interval is: %d,get newH height is: %d", interval, newH))
+
 		time.Sleep(time.Duration(interval) * time.Second)
 	}
 }

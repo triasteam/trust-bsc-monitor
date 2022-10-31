@@ -9,7 +9,7 @@
 ```bash
 Usage of ./bsc_balance:
   -i int
-        blockheight unincrease time second: default: 120 (default 120)
+        blockheight unincrease time second: default: 60 (default 60)
   -name string
         restart docker name,default: trust-bsc (default "trust-bsc")
   -path string
