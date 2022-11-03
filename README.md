@@ -1,1 +1,0 @@
-# trust-bsc-monitor
